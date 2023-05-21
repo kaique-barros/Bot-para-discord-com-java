@@ -4,11 +4,10 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 
 public class Main {
-
     public static JDA jda;
     public static void main(String[] args) throws LoginException {
-        String token = "MTEwODg1NjQ5MTc5Mzk3MzI0OA.GvRGHT.4KtfXMlyTTulyRV7b8py0x1693woY2Pye3MLtA";
-        jda = JDABuilder.createDefault(token)
+        Token tk = new Token();
+        jda = JDABuilder.createDefault(tk.getToken())
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
 
