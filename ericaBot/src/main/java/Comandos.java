@@ -10,7 +10,8 @@ public class Comandos extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         MessageChannel canal = event.getChannel();
-        TextChannel canal =
-
+        if(event.getMessage().getContentRaw().equals("!erica")){
+            canal.sendMessage("oi").queue();
+        }
     }
 }

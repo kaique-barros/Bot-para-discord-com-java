@@ -7,7 +7,7 @@ public class Main {
 
     public static JDA jda;
     public static void main(String[] args) throws LoginException {
-        String token = "MTEwODg1NjQ5MTc5Mzk3MzI0OA.GfY3TW.BC2E6pCqdMvGc8v2yxChttEwxBNKZmgz7EeRik";
+        String token = "MTEwODg1NjQ5MTc5Mzk3MzI0OA.GvRGHT.4KtfXMlyTTulyRV7b8py0x1693woY2Pye3MLtA";
         jda = JDABuilder.createDefault(token)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
