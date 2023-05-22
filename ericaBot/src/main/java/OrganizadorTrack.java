@@ -5,11 +5,11 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class Player extends AudioEventAdapter {
+public class OrganizadorTrack extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingDeque<AudioTrack> queue = new LinkedBlockingDeque<>();
 
-    public Player(AudioPlayer player){
+    public OrganizadorTrack(AudioPlayer player){
         this.player = player;
     }
     @Override
@@ -23,4 +23,11 @@ public class Player extends AudioEventAdapter {
         }
     }
 
+    public AudioPlayer getPlayer() {
+        return player;
+    }
+
+    public BlockingDeque<AudioTrack> getQueue() {
+        return queue;
+    }
 }

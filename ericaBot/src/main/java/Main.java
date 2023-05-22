@@ -1,6 +1,5 @@
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-
 import javax.security.auth.login.LoginException;
 
 public class Main {
@@ -10,7 +9,8 @@ public class Main {
         jda = JDABuilder.createDefault(tk.getToken())
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
-
-        jda.addEventListener(new Comandos());
+        Comandos controles=new Comandos();
+        controles.add(new Tocar());
+        jda.addEventListener(controles);
     }
 }
