@@ -1,3 +1,5 @@
+package DiscordBot;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -12,8 +14,8 @@ import java.util.Map;
 
 public class ControlePlayer {
     private static ControlePlayer INSTANCE;
-    private Map<Long, ControleMusicaServer> controleMusicaServer = new HashMap<>();
-    private AudioPlayerManager audioPlayerManager= new DefaultAudioPlayerManager();
+    private final Map<Long, ControleMusicaServer> controleMusicaServer = new HashMap<>();
+    private final AudioPlayerManager audioPlayerManager = new DefaultAudioPlayerManager();
 
     private ControlePlayer() {
         AudioSourceManagers.registerRemoteSources(audioPlayerManager);
@@ -21,24 +23,24 @@ public class ControlePlayer {
     }
 
 
-    public static ControlePlayer get(){
-        if(INSTANCE==null)
-            INSTANCE=new ControlePlayer();
+    public static ControlePlayer get() {
+        if (INSTANCE == null)
+            INSTANCE = new ControlePlayer();
 
-            return INSTANCE;
+        return INSTANCE;
     }
 
-    public ControleMusicaServer getControleMusica(Guild guild){
+    public ControleMusicaServer getControleMusicaServer(Guild guild) {
         return controleMusicaServer.computeIfAbsent(guild.getIdLong(), (guildId) -> {
-            ControleMusicaServer controleMusica=new ControleMusicaServer(audioPlayerManager);
+            ControleMusicaServer controleMusica = new ControleMusicaServer(audioPlayerManager,guild);
             guild.getAudioManager().setSendingHandler(controleMusica.getAudioForwarder());
 
             return controleMusica;
         });
     }
 
-    public void play(Guild guild,String UrlMusica){
-        ControleMusicaServer controleMusicaServer=getControleMusica(guild);
+    public void play(Guild guild, String UrlMusica) {
+        ControleMusicaServer controleMusicaServer = getControleMusicaServer(guild);
         audioPlayerManager.loadItemOrdered(controleMusicaServer, UrlMusica, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
@@ -47,7 +49,7 @@ public class ControlePlayer {
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-
+                controleMusicaServer.getOrganizadorTrack().queue(playlist.getTracks().get(0));
             }
 
             @Override

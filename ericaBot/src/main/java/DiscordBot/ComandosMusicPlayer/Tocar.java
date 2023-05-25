@@ -1,12 +1,22 @@
+package DiscordBot.ComandosMusicPlayer;
+
+import DiscordBot.ControleMusicaServer;
+import DiscordBot.ControlePlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Tocar implements ICommand{
+public class Tocar implements ICommand {
 
     @Override
     public String getName() {
@@ -15,13 +25,13 @@ public class Tocar implements ICommand{
 
     @Override
     public String getDescription() {
-        return "Will play a song";
+        return "Digite uma musica para eu tocar";
     }
 
     @Override
     public List<OptionData> getOptions() {
-        List<OptionData> options= new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING,"Name: ", "Name of the song to play",true));
+        List<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.STRING, "nome", "Nome da musica para tocar", true));
         return options;
     }
 
@@ -31,7 +41,7 @@ public class Tocar implements ICommand{
         GuildVoiceState memberVoiceState=member.getVoiceState();
 
         if(!memberVoiceState.inAudioChannel()){
-            event.reply("É Necessário estar em um canal de voz").queue();
+            event.reply("Necessario estar em um canal de voz").queue();
             return;
         }
 
@@ -43,14 +53,24 @@ public class Tocar implements ICommand{
         }
         else{
             if(selfVoiceState.getChannel()!=memberVoiceState.getChannel()){
-                event.reply("Você precisa estar no mesmo canal de voz que eu");
+                event.reply("Voce precisa estar no mesmo canal de voz que eu");
                 return;
             }
         }
 
-        ControlePlayer controlePlayer=ControlePlayer.get();
+        String name= event.getOption("nome").getAsString();
+
+        try{
+            new URI(name);
+        }catch(URISyntaxException e){
+            name = "ytsearch:" +name;
+        }
+
+        ControlePlayer controlePlayer= ControlePlayer.get();
+        controlePlayer.play(event.getGuild(),name);
+        ControleMusicaServer controleMusicaServer= ControlePlayer.get().getControleMusicaServer(event.getGuild());
         event.reply("Tocando...").queue();
-        controlePlayer.play(event.getGuild(), event.getOption("Name: ").getAsString());
+
 
     }
 

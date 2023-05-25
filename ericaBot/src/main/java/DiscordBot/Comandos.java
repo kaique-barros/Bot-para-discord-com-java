@@ -1,3 +1,6 @@
+package DiscordBot;
+
+import DiscordBot.ComandosMusicPlayer.ICommand;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Comandos extends ListenerAdapter {
-    private List<ICommand> commands = new ArrayList<>();
+    private final List<ICommand> commands = new ArrayList<>();
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if(event.getAuthor().isBot()) return;

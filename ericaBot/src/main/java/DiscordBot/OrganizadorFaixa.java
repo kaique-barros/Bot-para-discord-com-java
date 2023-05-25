@@ -1,3 +1,5 @@
+package DiscordBot;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -5,16 +7,22 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class OrganizadorTrack extends AudioEventAdapter {
+public class OrganizadorFaixa extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingDeque<AudioTrack> queue = new LinkedBlockingDeque<>();
 
-    public OrganizadorTrack(AudioPlayer player){
+    boolean isRepeat= false;
+
+    public OrganizadorFaixa(AudioPlayer player){
         this.player = player;
     }
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        player.startTrack(queue.poll(), false);
+        if(isRepeat) {
+            player.startTrack(track.makeClone(), false);
+        } else {
+            player.startTrack(queue.poll(), false);
+        }
     }
 
     public void queue(AudioTrack track){
@@ -30,4 +38,12 @@ public class OrganizadorTrack extends AudioEventAdapter {
     public BlockingDeque<AudioTrack> getQueue() {
         return queue;
     }
+
+    public boolean getIsRepeat(){
+        return isRepeat;
+    }
+    public void setRepeat(boolean repeat) {
+        isRepeat = repeat;
+    }
+
 }
